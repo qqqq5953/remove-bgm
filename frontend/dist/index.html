@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>去除配樂</title>
+    <script type="module" crossorigin src="/assets/index-B6GQxG83.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B0wed6c9.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <h1>去除配樂</h1>
+        <p class="subtitle">去掉影片的背景音樂，保留對白與音效，輸出 Logic Pro 素材包</p>
+        <div id="status" class="status" aria-live="polite">檢查環境中…</div>
+      </header>
+
+      <form id="job-form" class="card" novalidate>
+        <fieldset id="form-fields">
+          <section class="field-group">
+            <h2>① 影片來源</h2>
+            <div class="tabs" role="tablist">
+              <button type="button" role="tab" class="tab" data-mode="url" aria-selected="true">YouTube 網址</button>
+              <button type="button" role="tab" class="tab" data-mode="file" aria-selected="false">上傳檔案</button>
+            </div>
+            <div class="tab-panel" data-panel="url">
+              <input id="url" name="url" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off" />
+            </div>
+            <div class="tab-panel" data-panel="file" hidden>
+              <label id="dropzone" class="dropzone" for="file">
+                <input id="file" name="file" type="file" accept="video/*,audio/*,.mkv" />
+                <span id="file-label">把影片拖到這裡，或點一下選擇檔案</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="field-group">
+            <h2>② 擷取片段 <span class="hint">（選填，留空代表整段）</span></h2>
+            <div class="row">
+              <label class="time-field">
+                開始
+                <input id="start" name="start" type="text" inputmode="decimal" placeholder="0:00" autocomplete="off" />
+              </label>
+              <span class="dash">—</span>
+              <label class="time-field">
+                結束
+                <input id="end" name="end" type="text" inputmode="decimal" placeholder="結尾" autocomplete="off" />
+              </label>
+            </div>
+            <p class="hint">格式：分:秒（1:23）或 時:分:秒（1:02:03）</p>
+          </section>
+
+          <section class="field-group">
+            <h2>③ 選項</h2>
+            <label class="slider">
+              <span>對白音量</span>
+              <input id="dialogue_db" name="dialogue_db" type="range" min="-12" max="6" step="1" value="0" />
+              <output id="dialogue_db_value" for="dialogue_db">0 dB</output>
+            </label>
+            <label class="slider">
+              <span>音效音量</span>
+              <input id="effects_db" name="effects_db" type="range" min="-12" max="6" step="1" value="0" />
+              <output id="effects_db_value" for="effects_db">0 dB</output>
+            </label>
+            <p class="hint">音量只影響影片音軌與「對白＋音效」混音檔；分開的對白、音效檔維持原音量。</p>
+            <label class="checkbox">
+              <input id="export_music" name="export_music" type="checkbox" />
+              輸出原配樂 stem（寫完後可以跟原作比較）
+            </label>
+          </section>
+        </fieldset>
+
+        <ul id="errors" class="errors" role="alert" hidden></ul>
+        <button id="submit" type="submit" class="primary">開始處理</button>
+      </form>
+
+      <section id="progress" class="card" hidden>
+        <h2>處理中</h2>
+        <p id="stage">準備中…</p>
+        <progress id="progress-bar" max="100" value="0"></progress>
+        <p id="progress-text" class="hint">0%</p>
+      </section>
+
+      <section id="results" class="card" hidden></section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+[project]
+name = "remove-bgm"
+version = "0.1.0"
+description = "去除影片背景音樂，只保留對白與音效，輸出 Logic Pro 素材包"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "python-multipart>=0.0.9",
+    "numpy>=1.26",
+    "soundfile>=0.12",
+    "torch>=2.4",
+    "yt-dlp",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "httpx>=0.27",
+]
+
+[project.scripts]
+remove-bgm = "remove_bgm.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/remove_bgm"]
+
+[tool.pytest.ini_options]
+addopts = "-m \"not model\""
+testpaths = ["tests"]
+markers = [
+    "model: 需要下載真實模型權重的測試",
+]
+filterwarnings = [
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated",
+]
